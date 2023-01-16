@@ -1,37 +1,62 @@
 package fr.isen.tuveny.androiderestaurant
 
 import android.os.Bundle
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.Request
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.google.android.material.snackbar.Snackbar
-import fr.isen.tuveny.androiderestaurant.model.PlatsData
+import fr.isen.tuveny.androiderestaurant.databinding.ActivityCategoryBinding
 import fr.isen.tuveny.androiderestaurant.model.PlatsViewAdapter
 
 class CategoryActivity : AppCompatActivity() {
+    companion object {
+        const val URL = "http://test.api.catering.bluecodegames.com/menu"
+    }
 
-    val plats = listOf(
-        PlatsData("Salade César", "8€", "Salade verte, tomates, oeufs, croûtons, parmesan", ""),
-        PlatsData("Salade Niçoise", "9€", "Salade verte, tomates, oeufs, anchois, olives, thon", ""),
-        PlatsData("Salade de fruits", "6€", "Fruits frais", ""),
-    )
+    private lateinit var category: String
 
+    lateinit var binding: ActivityCategoryBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_category)
-        val title: String = intent.getStringExtra("category") ?: "Category"
-        val titleView = findViewById<TextView>(R.id.text_category_title)
-        titleView.text = title
+        binding = ActivityCategoryBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        Snackbar.make(titleView, "Category: $title", Snackbar.LENGTH_LONG).show()
+        category = intent.getStringExtra("category") ?: "Entrées"
+        supportActionBar?.title = category
 
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerCategory)
-        val adapter = PlatsViewAdapter(plats)
+        populatePlats()
+    }
 
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
+    private fun populatePlats() {
+        val queue = Volley.newRequestQueue(this)
 
+        val stringRequest = object : StringRequest(Request.Method.POST, URL,
+            { response ->
+                val plats = PlatsViewAdapter.parsePlats(response, category)
+                binding.recyclerCategory.layoutManager = LinearLayoutManager(this)
+                binding.recyclerCategory.adapter = PlatsViewAdapter(plats)
+                Log.i("CategoryActivity", "Plats récupérés")
+            },
+            { error ->
+                Snackbar.make(
+                    binding.recyclerCategory,
+                    "Erreur de connexion",
+                    Snackbar.LENGTH_LONG
+                ).show()
+                Log.e("CategoryActivity", error.toString())
+            }
+        ) {
+            override fun getBody(): ByteArray {
+                return "{\"id_shop\":\"1\"}".toByteArray()
+            }
+
+            override fun getBodyContentType(): String {
+                return "application/json"
+            }
+        }
+        queue.add(stringRequest)
     }
 }
