@@ -3,4 +3,6 @@
     <string name="plats">Plats</string>
     <string name="entr_es">Entrées</string>
     <string name="d_serts">Desserts</string>
+    <string name="prix_label">Prix :</string>
+    <string name="ingredients_label">Ingrédients :</string>
 </resources>

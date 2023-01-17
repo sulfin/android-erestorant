@@ -1,9 +1,10 @@
-package fr.isen.tuveny.androiderestaurant
+package fr.isen.tuveny.androiderestaurant.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.squareup.picasso.Picasso
+import fr.isen.tuveny.androiderestaurant.R
 import fr.isen.tuveny.androiderestaurant.databinding.ActivityPlatDetailBinding
 import fr.isen.tuveny.androiderestaurant.model.data.Plat
 
@@ -25,11 +26,13 @@ class PlatDetailActivity : AppCompatActivity() {
 
     private fun populatePlat() {
         binding.platDetailNom.text = plat?.name_fr
-        Log.d("PlatDetailActivity", "Avant image : ${plat?.images?.size}")
-        if ((plat?.images?.size ?: 0) > 0) {
-            if(plat?.images?.first() != "") {
-                Picasso.get().load(plat?.images?.first()).into(binding.platDetailImage)
-            }
+        val ingredientText = "${getString(R.string.ingredients_label)} ${plat?.getIngredients()}"
+        binding.platDetailIngredients.text = ingredientText
+        val priceText = "${getString(R.string.prix_label)} ${plat?.getPrice()}€"
+        binding.platDetailPrice.text = priceText
+
+        if (plat?.getImage() != null) {
+            Picasso.get().load(plat?.getImage()).into(binding.platDetailImage)
         } else {
             Log.d("PlatDetailActivity", "No image for this plat")
         }

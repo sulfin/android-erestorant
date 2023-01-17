@@ -1,4 +1,4 @@
-package fr.isen.tuveny.androiderestaurant
+package fr.isen.tuveny.androiderestaurant.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import fr.isen.tuveny.androiderestaurant.databinding.ActivityHomeBinding
+import fr.isen.tuveny.androiderestaurant.model.CategoryEnum
 
 class HomeActivity : AppCompatActivity() {
 
@@ -22,19 +23,21 @@ class HomeActivity : AppCompatActivity() {
         buttonPlat = binding.buttonHomePlats
         buttonDessert = binding.buttonHomeDesserts
 
+        supportActionBar?.hide()
+
         buttonEntree.setOnClickListener {
             val intent = Intent(this, CategoryActivity::class.java)
-            intent.putExtra("category", "Entrées")
+            intent.putExtra("category", CategoryEnum.ENTREE.cat)
             startActivity(intent)
         }
         buttonPlat.setOnClickListener {
             val intent = Intent(this, CategoryActivity::class.java)
-            intent.putExtra("category", "Plats")
+            intent.putExtra("category", CategoryEnum.PLAT.cat)
             startActivity(intent)
         }
         buttonDessert.setOnClickListener {
             val intent = Intent(this, CategoryActivity::class.java)
-            intent.putExtra("category", "Desserts")
+            intent.putExtra("category", CategoryEnum.DESSERT.cat)
             Log.i("HomeActivity", "Dessert button clicked")
             startActivity(intent)
         }

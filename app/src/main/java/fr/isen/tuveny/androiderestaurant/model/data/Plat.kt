@@ -14,6 +14,19 @@ data class Plat(
     val images: List<String>,
     val ingredients: List<Ingredient>,
     val prices: List<Price>
-): Parcelable{
+) : Parcelable {
+    fun getIngredients() =
+        ingredients.foldRightIndexed("") { index, ingredient, acc ->
+            ingredient.name_fr + (if (index != ingredients.size - 1) ", " else "") + acc
+        }
+
+    fun getPrice()  = prices.firstOrNull()?.price ?: "N/A"
+    fun getImage() : String? {
+        val im = images.firstOrNull()
+        if(im != null){
+            if(im == "") return null
+        }
+        return im
+    }
 
 }

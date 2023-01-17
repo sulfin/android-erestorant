@@ -1,20 +1,20 @@
 package fr.isen.tuveny.androiderestaurant.model
 
-import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
-import fr.isen.tuveny.androiderestaurant.PlatDetailActivity
+import com.squareup.picasso.Picasso
 import fr.isen.tuveny.androiderestaurant.R
 import fr.isen.tuveny.androiderestaurant.model.data.APIData
 import fr.isen.tuveny.androiderestaurant.model.data.Plat
 
-class PlatsViewAdapter(private val plats: List<Plat>) : RecyclerView.Adapter<PlatsViewAdapter.PlatsViewHolder>() {
-    companion object{
+class PlatsViewAdapter(private val plats: MutableList<Plat>, val onItemClick: ((Plat) -> Unit)) :
+    RecyclerView.Adapter<PlatsViewAdapter.PlatsViewHolder>() {
+    companion object {
         fun parsePlats(data: String, category: String): List<Plat> {
             val gson = Gson()
             val plats = gson.fromJson(data, APIData::class.java)
@@ -22,16 +22,20 @@ class PlatsViewAdapter(private val plats: List<Plat>) : RecyclerView.Adapter<Pla
         }
     }
 
+    fun addAll(plats: List<Plat>) {
+        this.plats.addAll(plats)
+        notifyDataSetChanged()
+    }
+
+    fun clear() {
+        this.plats.clear()
+        notifyDataSetChanged()
+    }
+
     inner class PlatsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val nameView = itemView.findViewById<TextView>(R.id.textItemName)
-        init {
-            itemView.setOnClickListener {
-                val intent = Intent(itemView.context, PlatDetailActivity::class.java)
-                intent.putExtra("plat", plats[adapterPosition])
-                Log.d("PlatsViewAdapter", "Plat ${plats[adapterPosition]}")
-                itemView.context.startActivity(intent)
-            }
-        }
+        val itemName: TextView = itemView.findViewById(R.id.platListItemName)
+        val itemPrice: TextView = itemView.findViewById(R.id.platListItemPrice)
+        val itemImage: ImageView = itemView.findViewById(R.id.platListItemImage)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlatsViewHolder {
@@ -46,9 +50,21 @@ class PlatsViewAdapter(private val plats: List<Plat>) : RecyclerView.Adapter<Pla
     }
 
     override fun onBindViewHolder(holder: PlatsViewHolder, position: Int) {
-        holder.nameView.text = plats[position].name_fr
-    }
+        val plat = plats[position]
+        holder.itemName.text = plat.name_fr
+        val priceText = "${plat.getPrice()}€"
+        holder.itemPrice.text = priceText
+        if (plat.getImage() != null) {
+            Picasso.get().load(plat.getImage())
+                .placeholder(R.drawable.ic_image_placeholder)
+                .error(R.drawable.ic_image_placeholder)
+                .into(holder.itemImage)
+        }
 
+        holder.itemView.setOnClickListener {
+            onItemClick(plat)
+        }
+    }
 
 
 }
