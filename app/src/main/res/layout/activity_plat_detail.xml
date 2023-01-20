@@ -7,33 +7,78 @@
         android:layout_height="match_parent"
         tools:context=".activity.PlatDetailActivity">
 
-    <ImageView
-            android:layout_width="0dp"
-            android:layout_height="150dp" tools:srcCompat="@drawable/ic_image_placeholder"
-            android:id="@+id/platDetailImage"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="1.0" app:layout_constraintEnd_toEndOf="parent"
-            android:scaleType="centerCrop" android:contentDescription="TODO"/>
     <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content" android:id="@+id/platDetailNom"
-            android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/platDetailImage" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.0"
-            android:textAlignment="center" android:textStyle="bold" android:textSize="30sp"/>
+            android:textAlignment="center" android:textStyle="bold" android:textSize="30sp"
+            android:layout_marginTop="32dp" app:layout_constraintTop_toBottomOf="@+id/platDetailImages"/>
     <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content" android:id="@+id/platDetailIngredients"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="63dp" app:layout_constraintTop_toBottomOf="@+id/platDetailNom"
+            android:layout_marginTop="32dp" app:layout_constraintTop_toBottomOf="@+id/platDetailNom"
             android:textSize="20sp" android:paddingStart="16sp" android:paddingEnd="16sp" android:paddingTop="8sp"
             android:paddingBottom="8sp" tools:text="@string/ingredients_label"/>
-    <TextView
-            android:text="@string/prix_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/platDetailPrice"
-            android:layout_marginTop="68dp"
-            app:layout_constraintTop_toBottomOf="@+id/platDetailIngredients"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="64dp" android:textSize="20sp"/>
+    <androidx.viewpager2.widget.ViewPager2
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" android:id="@+id/platDetailImages"/>
+    <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:id="@+id/platDetailButtonAddToCart"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="32dp"
+            android:layout_marginEnd="32dp" android:layout_marginStart="32dp"
+            android:text="@string/button_total_price" android:textAllCaps="true"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="32dp" app:layout_constraintTop_toBottomOf="@+id/platDetailIngredients">
+
+        <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content" android:id="@+id/platDetailLabelQuantity"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+                android:textAlignment="center"/>
+
+        <com.google.android.material.button.MaterialButton
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                style="@style/Widget.MaterialComponents.Button.Icon"
+                app:icon="@drawable/ic_remove"
+                app:iconSize="24dp"
+                app:iconPadding="0dp"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/minus"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.AndroidERestaurant.Button.Rounded"
+                app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/platDetailLabelQuantity" android:layout_marginEnd="32dp"
+                android:id="@+id/platDetailButonRemove"/>
+        <com.google.android.material.button.MaterialButton
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                style="@style/Widget.MaterialComponents.Button.Icon"
+                app:icon="@drawable/ic_add"
+                app:iconSize="24dp"
+                app:iconPadding="0dp"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/plus"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.AndroidERestaurant.Button.Rounded"
+                android:id="@+id/platDetailButonAdd"
+                app:layout_constraintStart_toEndOf="@+id/platDetailLabelQuantity" android:layout_marginStart="32dp"
+                app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
