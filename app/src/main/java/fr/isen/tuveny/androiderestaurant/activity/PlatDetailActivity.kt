@@ -1,8 +1,12 @@
 package fr.isen.tuveny.androiderestaurant.activity
 
+import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import fr.isen.tuveny.androiderestaurant.R
@@ -13,7 +17,7 @@ import fr.isen.tuveny.androiderestaurant.model.data.CartLine
 import fr.isen.tuveny.androiderestaurant.model.data.Plat
 import java.io.File
 
-class PlatDetailActivity : AppCompatActivity() {
+class PlatDetailActivity : MenuActivity() {
     private lateinit var binding: ActivityPlatDetailBinding
 
     private var plat: Plat? = null
@@ -21,12 +25,17 @@ class PlatDetailActivity : AppCompatActivity() {
     private var quantity: Int = 1
 
     private lateinit var cart: Cart
+
+    private lateinit var sharedPref: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPlatDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        sharedPref = getPreferences(MODE_PRIVATE)
+
         plat = intent.getParcelableExtra("plat")
+        setSupportActionBar(binding.platDetailToolbar)
         supportActionBar?.title = "Détail du plat"
 
         cart = Cart.get(this)
@@ -80,6 +89,12 @@ class PlatDetailActivity : AppCompatActivity() {
         cart.save()
         Snackbar.make(binding.root, "Plat ajouté au panier", Snackbar.LENGTH_SHORT).show()
         quantity = 1
+
+        with(sharedPref.edit()){
+            putInt("quantity", cart.totalItem)
+            apply()
+        }
+
         updateQuantity()
     }
 }

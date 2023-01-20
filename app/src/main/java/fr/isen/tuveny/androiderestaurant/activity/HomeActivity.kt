@@ -10,7 +10,7 @@ import fr.isen.tuveny.androiderestaurant.R
 import fr.isen.tuveny.androiderestaurant.databinding.ActivityHomeBinding
 import fr.isen.tuveny.androiderestaurant.model.CategoryEnum
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : MenuActivity() {
 
     private lateinit var buttonEntree: Button
     private lateinit var buttonPlat: Button
@@ -25,6 +25,7 @@ class HomeActivity : AppCompatActivity() {
         buttonPlat = binding.buttonHomePlats
         buttonDessert = binding.buttonHomeDesserts
 
+        setSupportActionBar(binding.homeToolbar)
         supportActionBar?.title = getString(R.string.label_action_bar_home)
 
         buttonEntree.setOnClickListener {

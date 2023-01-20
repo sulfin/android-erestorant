@@ -16,7 +16,7 @@ import fr.isen.tuveny.androiderestaurant.model.PlatsViewAdapter
 import fr.isen.tuveny.androiderestaurant.model.data.Plat
 import org.json.JSONObject
 
-class CategoryActivity : AppCompatActivity() {
+class CategoryActivity : MenuActivity() {
     companion object {
         const val URL = "http://test.api.catering.bluecodegames.com/menu"
     }
@@ -37,6 +37,8 @@ class CategoryActivity : AppCompatActivity() {
         sharedPref = getPreferences(MODE_PRIVATE)
 
         category = intent.getStringExtra("category") ?: "Entrées"
+
+        setSupportActionBar(binding.categoryToolbar)
         supportActionBar?.title = category
 
         adapter = PlatsViewAdapter(mutableListOf(), this::changeActivityDetail)

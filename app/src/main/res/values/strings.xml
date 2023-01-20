@@ -5,7 +5,7 @@
     <string name="d_serts">Desserts</string>
     <string name="prix_label">Prix :</string>
     <string name="ingredients_label">Ingrédients :</string>
-    <string name="button_total_price">Total </string>
+    <string name="button_total_price">Total</string>
     <string name="label_action_bar_home">Menu</string>
     <string name="cache_key">cache_key</string>
     <string name="cache_key_timestamp">cache_key_timestamp</string>
