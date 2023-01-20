@@ -1,21 +1,16 @@
 package fr.isen.tuveny.androiderestaurant.activity
 
-import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import com.google.android.material.snackbar.Snackbar
-import com.squareup.picasso.Picasso
 import fr.isen.tuveny.androiderestaurant.R
 import fr.isen.tuveny.androiderestaurant.databinding.ActivityPlatDetailBinding
 import fr.isen.tuveny.androiderestaurant.model.ImagePagerAdapter
+import fr.isen.tuveny.androiderestaurant.model.Preferences
 import fr.isen.tuveny.androiderestaurant.model.data.Cart
 import fr.isen.tuveny.androiderestaurant.model.data.CartLine
 import fr.isen.tuveny.androiderestaurant.model.data.Plat
-import java.io.File
 
 class PlatDetailActivity : MenuActivity() {
     private lateinit var binding: ActivityPlatDetailBinding
@@ -26,16 +21,17 @@ class PlatDetailActivity : MenuActivity() {
 
     private lateinit var cart: Cart
 
-    private lateinit var sharedPref: SharedPreferences
+    private lateinit var cartSharedPref: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPlatDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        sharedPref = getPreferences(MODE_PRIVATE)
+        cartSharedPref = getSharedPreferences(Preferences.FILE_CART.key, MODE_PRIVATE)
 
         plat = intent.getParcelableExtra("plat")
         setSupportActionBar(binding.platDetailToolbar)
+
         supportActionBar?.title = "Détail du plat"
 
         cart = Cart.get(this)
@@ -90,10 +86,11 @@ class PlatDetailActivity : MenuActivity() {
         Snackbar.make(binding.root, "Plat ajouté au panier", Snackbar.LENGTH_SHORT).show()
         quantity = 1
 
-        with(sharedPref.edit()){
-            putInt("quantity", cart.totalItem)
+        with(cartSharedPref.edit()) {
+            putInt(Preferences.CART_QUANTITY.key, cart.totalItem)
             apply()
         }
+        updateCartQuantity()
 
         updateQuantity()
     }
