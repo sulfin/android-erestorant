@@ -10,7 +10,7 @@ import fr.isen.tuveny.androiderestaurant.R
 
 class ImagePagerAdapter(private val images: List<String>) : RecyclerView.Adapter<ImagePagerAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val image: ImageView = itemView.findViewById(R.id.platDetailPagerImage)
+        val image: ImageView = itemView.findViewById(R.id.cellCartImage)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

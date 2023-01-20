@@ -16,4 +16,26 @@
             android:id="@+id/cartToolbar" app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
     />
+    <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/cartToolbar"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/button" android:layout_marginBottom="24dp"
+            android:id="@+id/cartRecycler"/>
+    <Button
+            android:text="@string/label_pass_command"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" android:paddingLeft="60dp" android:paddingRight="60dp"
+            android:layout_marginBottom="24dp" android:layout_marginStart="24dp"/>
+    <TextView
+            android:text="@string/cart_total_label"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp" android:id="@+id/cartTotalLabel"
+            app:layout_constraintTop_toTopOf="@+id/button"
+            app:layout_constraintBottom_toBottomOf="@+id/button" android:textAlignment="center"
+            android:gravity="center" android:layout_marginStart="32dp"
+            app:layout_constraintStart_toEndOf="@+id/button"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

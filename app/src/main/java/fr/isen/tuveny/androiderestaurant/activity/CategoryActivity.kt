@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
@@ -44,6 +45,7 @@ class CategoryActivity : MenuActivity() {
         adapter = PlatsViewAdapter(mutableListOf(), this::changeActivityDetail)
         binding.recyclerCategory.adapter = adapter
         binding.recyclerCategory.layoutManager = LinearLayoutManager(this)
+        binding.recyclerCategory.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 
         binding.categorySwipeLayout.setOnRefreshListener {
             invalidateCache()

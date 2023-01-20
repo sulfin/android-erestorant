@@ -7,7 +7,7 @@
     <ImageView
             android:layout_width="0dp"
             android:layout_height="match_parent" app:srcCompat="@drawable/ic_image_placeholder"
-            android:id="@+id/platDetailPagerImage" app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/cellCartImage" app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
             android:scaleType="centerCrop"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

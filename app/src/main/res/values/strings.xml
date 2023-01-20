@@ -11,4 +11,12 @@
     <string name="cache_key_timestamp">cache_key_timestamp</string>
     <string name="minus">-</string>
     <string name="plus">+</string>
+    <string name="label_action_bar_cart">Panier</string>
+    <string name="label_pass_command">Passer la commande</string>
+    <string name="delete">delete</string>
+    <string name="cart_total_label">Total :</string>
+    <string name="label_dialog_confirm_order">Confirmez-vous la commande ?</string>
+    <string name="label_dialog_confirm_order_message">Total de la commande :</string>
+    <string name="label_dialog_confirm_order_confirm">Confirmer</string>
+    <string name="label_dialog_confirm_order_cancel">Annuler</string>
 </resources>
