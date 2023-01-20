@@ -6,22 +6,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import fr.isen.tuveny.androiderestaurant.R
-import fr.isen.tuveny.androiderestaurant.model.data.APIData
 import fr.isen.tuveny.androiderestaurant.model.data.Plat
 
 class PlatsViewAdapter(private val plats: MutableList<Plat>, val onItemClick: ((Plat) -> Unit)) :
     RecyclerView.Adapter<PlatsViewAdapter.PlatsViewHolder>() {
-    companion object {
-        fun parsePlats(data: String, category: String): List<Plat> {
-            val gson = Gson()
-            val plats = gson.fromJson(data, APIData::class.java)
-            return plats.data.first { it.name_fr == category }.items
-        }
-    }
-
     fun addAll(plats: List<Plat>) {
         this.plats.addAll(plats)
         notifyDataSetChanged()

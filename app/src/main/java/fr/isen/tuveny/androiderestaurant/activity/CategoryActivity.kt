@@ -1,17 +1,20 @@
 package fr.isen.tuveny.androiderestaurant.activity
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
-import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.snackbar.Snackbar
+import fr.isen.tuveny.androiderestaurant.R
 import fr.isen.tuveny.androiderestaurant.databinding.ActivityCategoryBinding
 import fr.isen.tuveny.androiderestaurant.model.PlatsViewAdapter
 import fr.isen.tuveny.androiderestaurant.model.data.Plat
+import org.json.JSONObject
 
 class CategoryActivity : AppCompatActivity() {
     companion object {
@@ -20,15 +23,18 @@ class CategoryActivity : AppCompatActivity() {
 
     private lateinit var category: String
 
-    lateinit var binding: ActivityCategoryBinding
+    private lateinit var binding: ActivityCategoryBinding
 
     private lateinit var adapter: PlatsViewAdapter
 
-    private var cache: List<Plat>? = null
+    private lateinit var sharedPref: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCategoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        sharedPref = getPreferences(MODE_PRIVATE)
 
         category = intent.getStringExtra("category") ?: "Entrées"
         supportActionBar?.title = category
@@ -38,7 +44,8 @@ class CategoryActivity : AppCompatActivity() {
         binding.recyclerCategory.layoutManager = LinearLayoutManager(this)
 
         binding.categorySwipeLayout.setOnRefreshListener {
-            getPlatNetwork()
+            invalidateCache()
+            populatePlats()
         }
 
         populatePlats()
@@ -56,10 +63,32 @@ class CategoryActivity : AppCompatActivity() {
         adapter.addAll(plats)
     }
 
+    private fun invalidateCache() {
+        with(sharedPref.edit()) {
+            putLong(getString(R.string.cache_key_timestamp), 0)
+            apply()
+        }
+    }
+
     private fun populatePlats() {
-        if (cache != null) {
+        binding.categorySwipeLayout.isRefreshing = true
+        val cache = sharedPref.getString(getString(R.string.cache_key), null)
+        val cache_ts = sharedPref.getLong(getString(R.string.cache_key_timestamp), 0)
+
+        var cacheValid = false
+
+        Log.d("CategoryActivity", "CacheTS: $cache_ts Cache: $cache")
+        if (cache != null && cache_ts > 0) {
+            val now = System.currentTimeMillis() / 1000
+            val diff = now - cache_ts
+            cacheValid = diff / 60 < resources.getInteger(R.integer.cache_valid_min)
+        }
+
+        if (cacheValid) {
             Log.d("CategoryActivity", "populatePlats: cache")
-            updatePlats(cache!!)
+            val plats = Plat.parsePlats(cache!!, category)
+            updatePlats(plats)
+            binding.categorySwipeLayout.isRefreshing = false
         } else {
             Log.d("CategoryActivity", "populatePlats: network")
             getPlatNetwork()
@@ -67,15 +96,17 @@ class CategoryActivity : AppCompatActivity() {
     }
 
     private fun getPlatNetwork() {
-        val queue = Volley.newRequestQueue(this)
+        val queue = Volley.newRequestQueue(this.applicationContext)
 
+        val requestBody = JSONObject()
+        requestBody.put("id_shop", "1")
 
-        val stringRequest = object : StringRequest(Request.Method.POST, URL,
+        val jsonRequest = JsonObjectRequest(
+            Request.Method.POST,
+            URL,
+            requestBody,
             { response ->
-                val plats = PlatsViewAdapter.parsePlats(response, category)
-                updatePlats(plats)
-                binding.categorySwipeLayout.isRefreshing = false
-                Log.i("CategoryActivity", "Plats récupérés")
+                handleResponse(response)
             },
             { error ->
                 Snackbar.make(
@@ -86,15 +117,20 @@ class CategoryActivity : AppCompatActivity() {
                 binding.categorySwipeLayout.isRefreshing = false
                 Log.e("CategoryActivity", error.toString())
             }
-        ) {
-            override fun getBody(): ByteArray {
-                return "{\"id_shop\":\"1\"}".toByteArray()
-            }
+        )
+        queue.add(jsonRequest)
+    }
 
-            override fun getBodyContentType(): String {
-                return "application/json"
-            }
+    private fun handleResponse(response: JSONObject) {
+        with(sharedPref.edit()) {
+            putString(getString(R.string.cache_key), response.toString())
+            val ts = System.currentTimeMillis() / 1000
+            putLong(getString(R.string.cache_key_timestamp), ts)
+            apply()
         }
-        queue.add(stringRequest)
+        val plats = Plat.parsePlats(response.toString(), category)
+        updatePlats(plats)
+        binding.categorySwipeLayout.isRefreshing = false
+        Log.i("CategoryActivity", "Plats récupérés")
     }
 }
