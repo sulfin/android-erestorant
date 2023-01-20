@@ -3,8 +3,10 @@ package fr.isen.tuveny.androiderestaurant.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import fr.isen.tuveny.androiderestaurant.R
 import fr.isen.tuveny.androiderestaurant.databinding.ActivityHomeBinding
 import fr.isen.tuveny.androiderestaurant.model.CategoryEnum
 
@@ -23,7 +25,7 @@ class HomeActivity : AppCompatActivity() {
         buttonPlat = binding.buttonHomePlats
         buttonDessert = binding.buttonHomeDesserts
 
-        supportActionBar?.hide()
+        supportActionBar?.title = getString(R.string.label_action_bar_home)
 
         buttonEntree.setOnClickListener {
             val intent = Intent(this, CategoryActivity::class.java)
@@ -47,4 +49,5 @@ class HomeActivity : AppCompatActivity() {
         super.onDestroy()
         Log.i("HomeActivity", "Fin de vie")
     }
+
 }
