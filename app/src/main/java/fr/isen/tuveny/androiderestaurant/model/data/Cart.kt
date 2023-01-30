@@ -11,8 +11,10 @@ class Cart(
     val context: Context
 ) {
     companion object {
+
+        const val CART_FILENAME = "cart.json"
         fun get(ctx: Context): Cart {
-            val cartFile = File(ctx.filesDir, "cart.json")
+            val cartFile = File(ctx.filesDir, CART_FILENAME)
             return if (cartFile.exists()) {
                 val cartJson = cartFile.readText()
                 val type: Type = object : TypeToken<List<CartLine>>() {}.type
@@ -38,7 +40,7 @@ class Cart(
     }
 
     fun save() {
-        val cartFile = File(context.filesDir, "cart.json")
+        val cartFile = File(context.filesDir, CART_FILENAME)
         val cartJson = Gson().toJson(items)
         cartFile.writeText(cartJson)
     }
