@@ -10,7 +10,7 @@ TD d'apprentissage de développement android
 
 - Plusieur activités
 - Passage de string entre activités
-- Passage d'objet parcelable entre activité
+- Passage d'objet parcelable entre activités
 - Requêtes de données sur une API
 - Affichage dans un recyclerView
 - Enregistrement de données dans les SharedPreferences
