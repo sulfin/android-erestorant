@@ -76,7 +76,7 @@ class PlatDetailActivity : MenuActivity() {
     }
 
     private fun addToCart() {
-        cart.items.add(
+        cart.add(
             CartLine(
                 plat!!,
                 quantity

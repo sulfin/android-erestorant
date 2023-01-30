@@ -27,6 +27,16 @@ class Cart(
         }
     }
 
+    fun add(item: CartLine) {
+        val index = items.indexOfFirst { it.plat.id == item.plat.id }
+        if (index == -1) {
+            items.add(item)
+        } else {
+            items[index].quantity += item.quantity
+        }
+        save()
+    }
+
     fun save() {
         val cartFile = File(context.filesDir, "cart.json")
         val cartJson = Gson().toJson(items)
