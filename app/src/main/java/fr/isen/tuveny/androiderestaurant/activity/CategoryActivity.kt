@@ -76,30 +76,44 @@ class CategoryActivity : MenuActivity() {
 
     private fun populatePlats() {
         binding.categorySwipeLayout.isRefreshing = true
-        val cache = sharedPref.getString(getString(R.string.cache_key), null)
+        val cache = sharedPref.getString(getString(R.string.cache_key), null) ?: ""
         val cache_ts = sharedPref.getLong(getString(R.string.cache_key_timestamp), 0)
 
         var cacheValid = false
 
         Log.d("CategoryActivity", "CacheTS: $cache_ts Cache: $cache")
-        if (cache != null && cache_ts > 0) {
+        if (cache != "" && cache_ts > 0) {
             val now = System.currentTimeMillis() / 1000
             val diff = now - cache_ts
             cacheValid = diff / 60 < resources.getInteger(R.integer.cache_valid_min)
         }
 
         if (cacheValid) {
-            Log.d("CategoryActivity", "populatePlats: cache")
-            val plats = Plat.parsePlats(cache!!, category)
-            updatePlats(plats)
-            binding.categorySwipeLayout.isRefreshing = false
+            fromCache(cache)
         } else {
-            Log.d("CategoryActivity", "populatePlats: network")
             getPlatNetwork()
         }
     }
 
+    private fun fromCache(cache: String){
+        Log.d("CategoryActivity", "populatePlats: cache")
+        val plats = Plat.parsePlats(cache, category)
+        updatePlats(plats)
+        binding.categorySwipeLayout.isRefreshing = false
+        Snackbar.make(
+            binding.recyclerCategory,
+            getString(R.string.get_from_cache),
+            Snackbar.LENGTH_SHORT
+        ).show()
+    }
+
     private fun getPlatNetwork() {
+        Log.d("CategoryActivity", "populatePlats: network")
+        Snackbar.make(
+            binding.recyclerCategory,
+            getString(R.string.request_from_network),
+            Snackbar.LENGTH_SHORT
+        ).show()
         val queue = Volley.newRequestQueue(this.applicationContext)
 
         val requestBody = JSONObject()

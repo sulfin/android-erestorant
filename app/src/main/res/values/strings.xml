@@ -19,4 +19,6 @@
     <string name="label_dialog_confirm_order_message">Total de la commande :</string>
     <string name="label_dialog_confirm_order_confirm">Confirmer</string>
     <string name="label_dialog_confirm_order_cancel">Annuler</string>
+    <string name="get_from_cache">Données mises à jour depuis le cache</string>
+    <string name="request_from_network">Demande des données sur l\'API</string>
 </resources>
