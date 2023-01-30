@@ -2,9 +2,9 @@
 
 TD d'apprentissage de développement android
 
-Affiche un menu de restaurant avec un listing par catégorie (Entrée, Plat, Dessert).
-Possibilité d'ajout dans le panier.
-Affiche les items du panier et "passe commande" (enlève les items du panier).
+- Affiche un menu de restaurant avec un listing par catégorie (Entrée, Plat, Dessert).
+- Possibilité d'ajout dans le panier.
+- Affiche les items du panier et "passe commande" (enlève les items du panier).
 
 ## Points notables
 
